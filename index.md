@@ -1,9 +1,9 @@
 +++
 title =  "PostgreSQL to Neo4j Transfer: Unique Nodes and DB Optimization"
 description = "Optimizing Graph Databases: Ensuring Unique Nodes and Creating Efficient Relationships in Neo4j"
-tags = ['Java', "neo4j","databases"]
+tags = ['java', "neo4j","databases"]
 images = ["images/feature-image.png"]
-date = "2024-08-07T15:10:02-05:00"
+date = "2024-08-07T14:59:58-05:00"
 categories = ["projects"]
 series = ["Java"]
 +++
