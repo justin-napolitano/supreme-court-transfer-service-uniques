@@ -1,159 +1,62 @@
-+++
-title =  "PostgreSQL to Neo4j Transfer: Unique Nodes and DB Optimization"
-description = "Optimizing Graph Databases: Ensuring Unique Nodes and Creating Efficient Relationships in Neo4j"
-tags = ['java', "neo4j","databases"]
-images = ["images/feature-image.png"]
-date = "2024-08-07T14:59:58-05:00"
-categories = ["projects"]
-series = ["Java"]
-+++
+---
+slug: "github-supreme-court-transfer-service-uniques"
+title: "supreme-court-transfer-service-uniques"
+repo: "justin-napolitano/supreme-court-transfer-service-uniques"
+githubUrl: "https://github.com/justin-napolitano/supreme-court-transfer-service-uniques"
+generatedAt: "2025-11-23T09:44:14.482073Z"
+source: "github-auto"
+---
 
 
-# Optimizing Graph Databases: Ensuring Unique Nodes and Creating Efficient Relationships in Neo4j
+# PostgreSQL to Neo4j Transfer: Unique Nodes and DB Optimization
 
-repo source : ```https://github.com/justin-napolitano/supreme-court-transfer```
+## Motivation
 
-In my last post I kinda messed up.. well not really but I did not account for trying to create unique relationships.. That doesn't really matter though because my postgres db is normalized.. so i can make those relationships easy.  This post details how to do that. 
+When migrating data from a normalized relational database like PostgreSQL to a graph database such as Neo4j, the primary challenge is to preserve data integrity and uniqueness. Graph databases excel at representing complex relationships, but duplicate nodes can distort query results and degrade performance. This project addresses how to maintain unique nodes and optimize relationships during such a transfer, specifically for Supreme Court case metadata.
 
-## Importance of Normalization
+## Problem Statement
 
-When working with large datasets, particularly in a relational database, ensuring the uniqueness of nodes and creating efficient relationships in a graph database like Neo4j can be challenging. This post will discuss how I approached this problem while building a graph from a PostgreSQL database containing Supreme Court case metadata. By ensuring a normalized source of truth, I optimized queries for building an effective and accurate graph.
+Relational databases store data in multiple normalized tables, linked by foreign keys. When importing this data into Neo4j, each entity must be represented by a single unique node. Without enforcing uniqueness, the graph can contain redundant nodes representing the same entity, which complicates queries and analysis.
 
-## The Challenge of Non-Unique Nodes
+The source PostgreSQL database includes tables such as:
 
-In relational databases, data is often stored in multiple tables with foreign keys linking related data. When importing this data into a graph database, it’s crucial to ensure that each node represents a unique entity. Without this, you can end up with duplicate nodes, leading to an inaccurate and inefficient graph.
+- `items`: Supreme Court case metadata
+- `callnumbers`: Call numbers associated with cases
+- `contributors`: Contributors to cases
+- `resources`: PDFs, images, and other resources
+- `subjects`: Subjects related to cases
 
-For example, consider the following tables:
+Each table references others via foreign keys, ensuring normalized and unique data in the relational model.
 
-items: Contains metadata about Supreme Court cases.
-callnumbers: Contains call numbers associated with cases.
-contributors: Contains contributors to the cases.
-resources: Contains resources like PDFs and images associated with cases.
-subjects: Contains subjects associated with cases.
+## Approach
 
-Each of these tables may reference the same external_id, representing a unique case. To avoid creating duplicate nodes in Neo4j, we need to ensure that each node is truly unique.
+The transfer process leverages the normalized structure of the PostgreSQL database to create unique nodes in Neo4j. This involves:
 
-### Step 1: Ensuring Unique Nodes
+1. **Identifying Unique Entities:** Using primary keys and unique constraints from PostgreSQL to define uniqueness in Neo4j nodes.
 
-To ensure the uniqueness of nodes, I first created nodes for each entity type with the relevant metadata. Here’s a simplified example of how this was done for each table:
+2. **Creating Nodes with Uniqueness Constraints:** Using Neo4j's constraints or MERGE operations to ensure no duplicate nodes are created.
 
-#### Item Node
+3. **Establishing Relationships:** Mapping foreign key relationships to graph relationships, preserving the normalized structure.
 
-```java
-public static void insertItemsIntoNeo4j(Set<Item> items) {
-    Session neo4jSession = Neo4jConnection.getSession();
-    for (Item item : items) {
-        neo4jSession.run("MERGE (i:Item {externalId: $externalId}) " +
-                        "ON CREATE SET i.title = $title, i.callNumber = $callNumber, i.date = $date",
-                Values.parameters(
-                        "externalId", item.getExternalId(),
-                        "title", item.getTitle() != null ? item.getTitle() : "",
-                        "callNumber", item.getCallNumber() != null ? item.getCallNumber() : "",
-                        "date", item.getDate() != null ? item.getDate() : ""
-                ));
-    }
-    neo4jSession.close();
-    logger.info("Inserted {} unique items into Neo4j.", items.size());
-}
-```
+4. **Optimizing Queries:** By maintaining uniqueness and normalized relationships, queries on the Neo4j graph become more efficient and accurate.
 
-#### Call Number Node
+## Implementation Details
 
-```java
+- The process is implemented in Java, as indicated by project tags.
+- Data transfer scripts or code likely use Neo4j's Java driver and PostgreSQL JDBC to connect and transfer data.
+- The use of `MERGE` in Cypher queries ensures nodes are created only if they do not exist.
+- Relationships are created after nodes are established to maintain referential integrity.
 
-public static void insertCallNumbersIntoNeo4j(Set<CallNumber> callNumbers) {
-    Session neo4jSession = Neo4jConnection.getSession();
-    for (CallNumber callNumber : callNumbers) {
-        neo4jSession.run("MERGE (c:CallNumber {externalId: $externalId}) " +
-                        "ON CREATE SET c.callNumber = $callNumber",
-                Values.parameters(
-                        "externalId", callNumber.getExternalId(),
-                        "callNumber", callNumber.getCallNumber() != null ? callNumber.getCallNumber() : ""
-                ));
-    }
-    neo4jSession.close();
-    logger.info("Inserted {} unique call numbers into Neo4j.", callNumbers.size());
-}
+## Practical Considerations
 
-```
+- Ensuring indexes and constraints in Neo4j before data import improves performance.
+- Batch processing large datasets prevents memory issues.
+- Logging and error handling during transfer are critical for troubleshooting.
 
-#### Contributor Node
+## Conclusion
 
-For contributors and subjects, we did not use externalId to ensure that each contributor and subject node is unique based on their properties alone.
+This project demonstrates a practical approach to migrating normalized relational data into a graph database while preserving node uniqueness and relationship integrity. By leveraging the structure of the source database and Neo4j's capabilities, it produces an optimized graph representation suitable for complex queries and analysis.
 
-```java
+---
 
-public static void insertContributorsIntoNeo4j(Set<Contributor> contributors) {
-    Session neo4jSession = Neo4jConnection.getSession();
-    for (Contributor contributor : contributors) {
-        neo4jSession.run("MERGE (c:Contributor {contributor: $contributor})",
-                Values.parameters(
-                        "contributor", contributor.getContributor() != null ? contributor.getContributor() : ""
-                ));
-    }
-    neo4jSession.close();
-    logger.info("Inserted {} unique contributors into Neo4j.", contributors.size());
-}
-
-```
-### Step 2: Creating Relationships
-
-After ensuring that nodes were unique, the next step was to create relationships between these nodes based on the join results from the PostgreSQL database. This step involves querying the relational database to join the relevant tables and then creating relationships in Neo4j.
-
-#### Example: Relating Items to Subjects
-
-```java
-
-private static void relateItemsToSubjects(Session session, int limit) throws Exception {
-    logger.info("Starting to relate items to subjects...");
-
-    Connection postgresConn = PostgresConnection.getConnection();
-    Statement stmt = postgresConn.createStatement();
-    ResultSet rs = stmt.executeQuery("SELECT i.external_id, s.subject FROM items i LEFT JOIN subjects s ON i.external_id = s.external_id LIMIT " + limit);
-
-    int count = 0;
-    while (rs.next()) {
-        String externalId = rs.getString("external_id");
-        String subject = rs.getString("subject");
-
-        if (subject != null) {
-            session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run("MATCH (i:Item {externalId: $externalId}), (s:Subject {subject: $subject}) " +
-                        "CREATE (i)-[:HAS_SUBJECT]->(s)",
-                        Values.parameters(
-                                "externalId", externalId,
-                                "subject", subject
-                        ));
-                return null;
-            });
-            count++;
-            logger.debug("Created relationship between Item (externalId: {}) and Subject (subject: {}).", externalId, subject);
-        }
-    }
-
-    rs.close();
-    stmt.close();
-    postgresConn.close();
-    logger.info("Related {} items to their subjects.", count);
-}
-```
-
-### Running the Relationship Creator with a Limit
-
-To facilitate testing with large tables, we added a limit argument to the relationship creation process, allowing us to specify how many records to process:
-
-```sh
-
-mvn compile
-mvn exec:java -Dexec.mainClass="com.supreme_court_transfer.RelationshipCreator" -Dexec.args="100"
-
-```
-
-This command limits the number of records processed to 100, making it easier to test and debug the process with large datasets.
-
-Conclusion
-By ensuring a normalized source of truth and creating unique nodes in Neo4j, we optimized our graph database to accurately represent our relational data. This approach not only prevents the creation of non-unique nodes but also ensures efficient relationship creation based on actual data relationships.
-
-This process highlights the importance of a normalized source of truth in relational databases when building graphs, allowing for optimized queries and accurate data representation in Neo4j. By carefully designing your data import and relationship creation processes, you can build powerful and efficient graph databases that leverage the strengths of both relational and graph data models.
-
-This approach ensures that the graph database accurately reflects the relationships in the relational database, optimizing performance and maintaining data integrity.
+*Reference: [Source repository](https://github.com/justin-napolitano/supreme-court-transfer)*
