@@ -1,12 +1,26 @@
 ---
-slug: "github-supreme-court-transfer-service-uniques"
-title: "supreme-court-transfer-service-uniques"
-repo: "justin-napolitano/supreme-court-transfer-service-uniques"
-githubUrl: "https://github.com/justin-napolitano/supreme-court-transfer-service-uniques"
-generatedAt: "2025-11-23T09:44:14.482073Z"
-source: "github-auto"
+slug: github-supreme-court-transfer-service-uniques
+title: PostgreSQL to Neo4j Data Transfer with Unique Node Preservation
+repo: justin-napolitano/supreme-court-transfer-service-uniques
+githubUrl: https://github.com/justin-napolitano/supreme-court-transfer-service-uniques
+generatedAt: '2025-11-23T09:44:14.482073Z'
+source: github-auto
+summary: >-
+  Demonstration of migrating normalized PostgreSQL data to Neo4j, ensuring unique nodes and
+  optimized relationships for Supreme Court case metadata.
+tags:
+  - postgresql
+  - neo4j
+  - data-migration
+  - graph-database
+  - java
+  - unique-nodes
+seoPrimaryKeyword: neo4j data transfer
+seoSecondaryKeywords:
+  - postgresql to neo4j
+  - unique node migration
+seoOptimized: true
 ---
-
 
 # PostgreSQL to Neo4j Transfer: Unique Nodes and DB Optimization
 
