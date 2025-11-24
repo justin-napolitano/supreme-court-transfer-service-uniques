@@ -20,6 +20,12 @@ seoSecondaryKeywords:
   - postgresql to neo4j
   - unique node migration
 seoOptimized: true
+topicFamily: datascience
+topicFamilyConfidence: 0.9
+topicFamilyNotes: >-
+  The post describes migrating and transforming data from PostgreSQL to Neo4j, focusing on data
+  uniqueness, relationships, and optimization, which aligns with ETL pipelines and data workflows
+  typical in the Datascience category.
 ---
 
 # PostgreSQL to Neo4j Transfer: Unique Nodes and DB Optimization
@@ -74,3 +80,4 @@ This project demonstrates a practical approach to migrating normalized relationa
 ---
 
 *Reference: [Source repository](https://github.com/justin-napolitano/supreme-court-transfer)*
+
