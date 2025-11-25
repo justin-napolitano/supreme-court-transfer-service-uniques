@@ -1,13 +1,13 @@
 ---
 slug: github-supreme-court-transfer-service-uniques
-title: PostgreSQL to Neo4j Data Transfer with Unique Node Preservation
+title: 'PostgreSQL to Neo4j Transfer: Ensuring Unique Nodes'
 repo: justin-napolitano/supreme-court-transfer-service-uniques
 githubUrl: https://github.com/justin-napolitano/supreme-court-transfer-service-uniques
 generatedAt: '2025-11-23T09:44:14.482073Z'
 source: github-auto
 summary: >-
-  Demonstration of migrating normalized PostgreSQL data to Neo4j, ensuring unique nodes and
-  optimized relationships for Supreme Court case metadata.
+  Learn how to migrate data from PostgreSQL to Neo4j while maintaining unique
+  nodes and optimizing relationships for Supreme Court case metadata.
 tags:
   - postgresql
   - neo4j
@@ -15,17 +15,26 @@ tags:
   - graph-database
   - java
   - unique-nodes
-seoPrimaryKeyword: neo4j data transfer
+  - data migration
+  - graph databases
+  - cypher
+  - data integrity
+seoPrimaryKeyword: postgresql to neo4j transfer
 seoSecondaryKeywords:
-  - postgresql to neo4j
-  - unique node migration
+  - unique nodes
+  - data integrity
+  - graph database optimization
+  - supreme court metadata
+  - data transfer best practices
 seoOptimized: true
 topicFamily: datascience
 topicFamilyConfidence: 0.9
 topicFamilyNotes: >-
-  The post describes migrating and transforming data from PostgreSQL to Neo4j, focusing on data
-  uniqueness, relationships, and optimization, which aligns with ETL pipelines and data workflows
-  typical in the Datascience category.
+  The post describes migrating and transforming data from PostgreSQL to Neo4j,
+  focusing on data uniqueness, relationships, and optimization, which aligns
+  with ETL pipelines and data workflows typical in the Datascience category.
+kind: project
+id: github-supreme-court-transfer-service-uniques
 ---
 
 # PostgreSQL to Neo4j Transfer: Unique Nodes and DB Optimization
