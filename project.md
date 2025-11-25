@@ -7,8 +7,8 @@ githubUrl: https://github.com/justin-napolitano/supreme-court-transfer-service-u
 generatedAt: '2025-11-24T21:36:35.591Z'
 source: github-auto
 summary: >-
-  Learn how to transfer Supreme Court case metadata from PostgreSQL to Neo4j
-  while ensuring unique nodes and efficient relationships.
+  Learn how to transfer Supreme Court case metadata from PostgreSQL to Neo4j while ensuring unique
+  nodes and efficient relationships.
 tags:
   - postgresql
   - neo4j
@@ -23,8 +23,8 @@ seoSecondaryKeywords:
   - graph database optimization
   - unique nodes in neo4j
 seoOptimized: true
-topicFamily: null
-topicFamilyConfidence: null
+topicFamily: datascience
+topicFamilyConfidence: 0.9
 kind: project
 entryLayout: project
 showInProjects: true
@@ -95,3 +95,4 @@ mvn exec:java
 ---
 
 *Note: This README is based on limited repository information and assumptions derived from available documentation.*
+
